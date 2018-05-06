@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userSchema = new mongoose.Schema({
+const pollSchema = new mongoose.Schema({
   creater: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User"
@@ -23,6 +23,14 @@ const userSchema = new mongoose.Schema({
   }]
 });
 
-const Poll = mongoose.model("Poll", userSchema);
+pollSchema.pre("save", () => {
+  console.log("about to save poll....");
+})
+
+pollSchema.post("save", () => {
+  console.log("Poll saved!");
+})
+
+const Poll = mongoose.model("Poll", pollSchema);
 
 module.exports = Poll;

@@ -5,15 +5,16 @@ const dotenv       = require('dotenv');
 const db           = require("./models");
 const authRoute    = require("./routes/auth");
 const pollsRoute   = require("./routes/polls");
+const errorHandler = require("./api/error");
 
 const PORT         = process.env.PORT || 8081;
 
 const app = express();
-
+dotenv.config({verbose: true});
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use("/api/auth", authRoute);
+app.use("/auth", authRoute);
 app.use("/api/polls", pollsRoute);
 
 app.use(function(req, res, next) {
