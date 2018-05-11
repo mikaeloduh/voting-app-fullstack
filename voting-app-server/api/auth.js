@@ -10,7 +10,7 @@ exports.signup = async function(req, res, next) {
   }
   catch(err) {
     if(err.code === 11000) {
-      err.message = "Sorry, that username or email is taken";
+      err.message = "username or email already exit";
     }
     return next({
       status: 400,

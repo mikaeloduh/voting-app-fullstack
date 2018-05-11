@@ -1,11 +1,11 @@
 const express = require('express');
-const { createPoll } = require("../api/polls")
+const { createPoll, listAllPolls, getPoll, deletePoll } = require("../api/polls")
 
 const router = express.Router();
 
-// router.route("/").get(listPolls);
+router.route("/").get(listAllPolls);
 router.route("/").post(createPoll);
-// router.route("/poll_id").get(getPoll);
-// router.route("/poll_id").delete(delPoll);
+router.route("/:poll_id").get(getPoll);
+router.route("/:poll_id").delete(deletePoll);
 
 module.exports = router;

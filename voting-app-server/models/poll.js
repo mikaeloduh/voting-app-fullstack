@@ -5,7 +5,7 @@ const pollSchema = new mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User"
   },
-  name: {
+  topic: {
     type: String,
     required: true,
     unique: true
