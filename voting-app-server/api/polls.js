@@ -1,5 +1,6 @@
 const db  = require('../models');
 
+// Create a poll
 async function createPoll(req, res, next) {
   try {
     let poll = await db.Poll.create({
@@ -14,6 +15,7 @@ async function createPoll(req, res, next) {
   }
 }
 
+// List all polls
 async function listAllPolls(req, res, next) {
   try {
     let messages = await db.Poll.find();
@@ -24,6 +26,7 @@ async function listAllPolls(req, res, next) {
   }
 }
 
+// Get a poll
 async function getPoll(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
@@ -34,6 +37,7 @@ async function getPoll(req, res, next) {
   }
 }
 
+// Delete a poll
 async function deletePoll(req, res, next) {
   try {
     let message = await db.Poll.findById(req.params.poll_id);

@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const db  = require('../models');
 
-exports.signup = async function(req, res, next) {
+async function signup(req, res, next) {
   try {
     let user = await db.User.create(req.body);
     let { id, username } = user;
@@ -19,7 +19,7 @@ exports.signup = async function(req, res, next) {
   }
 };
 
-exports.login = async function(req, res, next) {
+async function login(req, res, next) {
   try {
     let user = await db.User.findOne({email: req.body.email});
     let { id, username } = user;
@@ -36,3 +36,30 @@ exports.login = async function(req, res, next) {
     return next(err);
   }
 };
+
+async function authenticate(req, res, next) {
+  try {
+    console.log("authenticating.....");
+    let auth = req.headers.authorization;
+    if (!auth) {
+      return next({status: 400, message: "Please supply a vaild token."});
+    } else {
+      let token = auth.split(" ")[1];
+      jwt.verify(token, process.env.SECRET, function(err, decode) {
+        if(decode) {
+          return next();
+        } else {
+          return next({status: 400, message: "Please login."});
+        }
+      });
+    }
+  }
+  catch(err) {
+    return next(err);
+  }
+}
+
+module.exports.login = login;
+module.exports.signup = signup;
+module.exports.authenticate = authenticate;
+// module.exports.authorize = authorize;
