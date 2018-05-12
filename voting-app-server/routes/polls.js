@@ -8,6 +8,6 @@ router.get("/", listAllPolls);
 router.post("/", authenticate, createPoll);
 router.get("/:poll_id", getPoll);
 // router.put("/:poll_id", modifyPoll);
-router.delete("/:poll_id", authenticate, deletePoll);
+router.delete("/:poll_id", authenticate, authorize, deletePoll);
 
 module.exports = router;

@@ -39,13 +39,12 @@ async function login(req, res, next) {
 
 async function authenticate(req, res, next) {
   try {
-    console.log("authenticating.....");
     let auth = req.headers.authorization;
     if (!auth) {
       return next({status: 400, message: "Please supply a vaild token."});
     } else {
       let token = auth.split(" ")[1];
-      jwt.verify(token, process.env.SECRET, function(err, decode) {
+      jwt.verify(token, process.env.SECRET, (err, decode) => {
         if(decode) {
           return next();
         } else {
@@ -59,7 +58,24 @@ async function authenticate(req, res, next) {
   }
 }
 
+async function authorize(req, res, next) {
+  try {
+    let token = req.headers.authorization.split(" ")[1];
+    jwt.verify(token, process.env.SECRET, async (err, decode) => {
+      let { creater } = await db.Poll.findById(req.params.poll_id);
+      if(decode.id == creater) {
+        return next();
+      } else {
+        return next({status: 400, message: "Unthorized process."});
+      }
+    });
+  }
+  catch(err) {
+    return next(err);
+  }
+}
+
 module.exports.login = login;
 module.exports.signup = signup;
 module.exports.authenticate = authenticate;
-// module.exports.authorize = authorize;
+module.exports.authorize = authorize;
