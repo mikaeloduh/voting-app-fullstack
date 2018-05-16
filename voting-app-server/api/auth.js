@@ -46,6 +46,7 @@ async function authenticate(req, res, next) {
       let token = auth.split(" ")[1];
       jwt.verify(token, process.env.SECRET, (err, decode) => {
         if(decode) {
+          req.body.user = decode.id;
           return next();
         } else {
           return next({status: 400, message: "Please login."});
@@ -60,15 +61,12 @@ async function authenticate(req, res, next) {
 
 async function authorize(req, res, next) {
   try {
-    let token = req.headers.authorization.split(" ")[1];
-    jwt.verify(token, process.env.SECRET, async (err, decode) => {
-      let { creater } = await db.Poll.findById(req.params.poll_id);
-      if(decode.id == creater) {
-        return next();
-      } else {
-        return next({status: 400, message: "Unthorized process."});
-      }
-    });
+    let { creater } = await db.Poll.findById(req.params.poll_id);
+    if(req.body.user == creater) {
+      return next();
+    } else {
+      return next({status: 400, message: "Unthorized process."});
+    }
   }
   catch(err) {
     return next(err);
