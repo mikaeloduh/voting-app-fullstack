@@ -14,6 +14,15 @@ dotenv.config({verbose: true});
 app.use(cors());
 app.use(bodyParser.json());
 
+app.get("/ping", function(req, res) {
+  const customers = [
+    {id: 1, firstName: 'John', lastName: 'Doe'},
+    {id: 2, firstName: 'Brad', lastName: 'Traversy'},
+    {id: 3, firstName: 'Mary', lastName: 'Swanson'},
+  ];
+
+  res.send(customers);
+});
 app.use("/auth", authRoute);
 app.use("/api/polls", pollsRoute);
 

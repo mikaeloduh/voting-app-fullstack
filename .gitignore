@@ -89,5 +89,6 @@ typings/
 .env
 
 package-lock.json
+bootstrap-4.1.1/
 
 # End of https://www.gitignore.io/api/node,macos

@@ -40,8 +40,8 @@ async function getPoll(req, res, next) {
 // Delete a poll
 async function deletePoll(req, res, next) {
   try {
-    let poll = await db.Poll.findById(req.params.poll_id);
-    await poll.remove();
+    let poll = await db.Poll.findByIdAndRemove(req.params.poll_id);
+
     return res.status(200).json({
       message: "Poll #" + req.params.poll_id + " removed!"
     });
