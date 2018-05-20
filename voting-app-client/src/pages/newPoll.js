@@ -10,6 +10,7 @@ class NewPoll extends Component {
     };
     this.handleTopicChange = this.handleTopicChange.bind(this);
     this.handleOptionChange = this.handleOptionChange.bind(this);
+    this.handleAddOption = this.handleAddOption.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
@@ -24,23 +25,38 @@ class NewPoll extends Component {
   handleAddOption() {
     let arr = this.state.options;
     let opt = this.state.option;
-    arr.append(opt);
+    arr.push(opt);
     this.setState({option: '', options: arr});
   }
 
+  handleDelOption(idx) {
+    let arr = this.state.options;
+    arr.splice(idx, 1);
+    this.setState({options: arr});
+  }
+
   handleSubmit(event) {
-    alert(`A Topic was submitted: ${this.state.topic}, option: ${this.state.option}`);
+    let { topic, options } = this.state;
+    alert(`A Topic was submitted: ${topic}, options: ${options}`);
     event.preventDefault();
   }
 
   render() {
-    let optionList = options.map((val, idx) => {
+    let optionList = this.state.options.map((val, idx) => {
+      let id = "optionList" + idx + 1;
       return (
-        <ul className="list-group">
-          <li className="list-group-item" index={idx} >{val}</li>
-        </ul>
-      );
+        <div className="form-group row" key={idx}>
+          <label htmlFor={id} className="col-sm-12 col-md-2 col-form-label">Option {idx + 1}</label>
+          <div className="input-group col-sm-12 col-md-10">
+            <input id={id} className="form-control" type="text" value={val} readOnly />
+            <div className="input-group-append">
+              <button className="btn btn-outline-secondary" type="button" onClick={this.handleDelOption.bind(this, idx)}>Remove</button>
+            </div>
+          </div>
+        </div>
+      )
     });
+
     return (
       <form className="row justify-content-md-center text-center" onSubmit={this.handleSubmit}>
         <div className="col-sm-12 col-md-10">
@@ -51,13 +67,15 @@ class NewPoll extends Component {
               <input id="topicInput" className="form-control" type="text" value={this.state.topic} onChange={this.handleTopicChange} />
             </div>
           </div>
+
           {optionList}
+
           <div className="form-group row">
             <label htmlFor="optionInput" className="col-sm-12 col-md-2 col-form-label">Option</label>
             <div className="input-group col-sm-12 col-md-10">
               <input id="optionInput" className="form-control" type="text" value={this.state.option} onChange={this.handleOptionChange} />
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary" type="button" onClick="handleAddOption">Add</button>
+              <div className="input-group-append">
+                <button className="btn btn-outline-secondary" type="button" onClick={this.handleAddOption}>Add Option</button>
               </div>
             </div>
           </div>
