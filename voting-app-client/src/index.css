@@ -9,3 +9,7 @@ body {
 .poll-item {
   margin: 5 0;
 }
+
+.tableRow {
+  cursor: pointer;
+}

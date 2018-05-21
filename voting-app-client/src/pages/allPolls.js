@@ -8,6 +8,10 @@ class AllPolls extends Component {
     };
   }
 
+  handleOnClick(id) {
+    this.props.history.push(`/api/poll/${id}`);
+  }
+
   async componentDidMount() {
     try {
       // this.setState({ allPolls: 'loading...' });
@@ -20,16 +24,31 @@ class AllPolls extends Component {
   }
 
   render() {
-    let display = this.state.allPolls.map(poll =>
-      <li key={poll._id}>{poll.topic} - {poll.creater}</li>
-    )
-    // let { allPolls } = this.state;
+    let tableRow = this.state.allPolls.map((poll, idx) => {
+      return (
+        <tr className="tableRow" key={idx} onClick={this.handleOnClick.bind(this, poll._id)}>
+          <th scope="row">{poll.topic}</th>
+          <td>{poll.creater}</td>
+          <td>{poll._id}</td>
+        </tr>
+      )
+    });
+
     return (
       <div>
         <h2>All Polls</h2>
-        <ul>
-          {display}
-        </ul>
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Topic</th>
+              <th scope="col">Creater</th>
+              <th scope="col">Poll ID</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableRow}
+          </tbody>
+        </table>
       </div>
     );
   }
