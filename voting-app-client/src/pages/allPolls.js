@@ -9,18 +9,18 @@ class AllPolls extends Component {
   }
 
   handleOnClick(id) {
-    this.props.history.push(`/api/poll/${id}`);
+    this.props.history.push(`/poll/${id}`);
   }
 
-  async componentDidMount() {
-    try {
-      // this.setState({ allPolls: 'loading...' });
-      let d = await fetch('/api/polls').then(res => res.json());
-      this.setState({ allPolls: d });
-    }
-    catch(err) {
-      console.log(err);
-    }
+  componentDidMount() {
+    fetch('/api/polls')
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ allPolls: data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
@@ -31,7 +31,7 @@ class AllPolls extends Component {
           <td>{poll.creater}</td>
           <td>{poll._id}</td>
         </tr>
-      )
+      );
     });
 
     return (

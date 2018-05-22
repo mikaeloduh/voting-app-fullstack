@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { withRouter } from "react-router-dom";
 
 class NewPoll extends Component {
   constructor(props) {
@@ -51,8 +52,8 @@ class NewPoll extends Component {
       headers: headers,
       body: JSON.stringify(object)
     })
-    .then(res => res.json())
-    .catch(err => {console.log(err)});
+      .then(res => res.json())
+      .catch(err => {console.log(err)});
     this.props.history.push("/");
   }
 
@@ -73,7 +74,7 @@ class NewPoll extends Component {
     });
 
     return (
-      <form className="row justify-content-md-center text-center" onSubmit={this.handleSubmit}>
+    <form className="row justify-content-md-center text-center" onSubmit={this.handleSubmit}>
         <div className="col-sm-12 col-md-10">
           <legend>Create New Poll</legend>
           <div className="form-group row">
@@ -95,7 +96,7 @@ class NewPoll extends Component {
             </div>
           </div>
 
-          <input className="btn btn-primary" type="submit" value="Submit"  />
+          <input className="btn btn-primary btn-block" type="submit" value="Submit"  />
         </div>
       </form>
 
@@ -103,4 +104,4 @@ class NewPoll extends Component {
   }
 }
 
-export default NewPoll;
+export default withRouter(NewPoll);

@@ -4,6 +4,7 @@ import Navbar from "./components/navbar";
 
 import AllPolls from './pages/allPolls';
 import NewPoll from './pages/newPoll';
+import Poll from './pages/poll';
 import Test from './pages/test';
 import './App.css';
 
@@ -17,6 +18,7 @@ class App extends Component {
           <Switch>
             <Route exact path="/" component={AllPolls} />
             <Route path="/newpoll" component={NewPoll} />
+            <Route path="/poll/:id" component={Poll} />
             <Route path="/test" component={Test} />
           </Switch>
         </div>
