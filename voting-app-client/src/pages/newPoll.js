@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withRouter } from "react-router-dom";
+import { apiCall, setTokenHeader } from "../service/api";
 
 class NewPoll extends Component {
   constructor(props) {
@@ -44,16 +45,9 @@ class NewPoll extends Component {
       topic: topic,
       options: opts
     };
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZjYyZDEyMDg3N2VhMDYyMzZhOTYzZSIsInVzZXJuYW1lIjoiYmFuYW5hIiwiaWF0IjoxNTI2MjU5NDA0fQ.75AsF0wQw5y4427_43S_rEylM7Kfd_s299fzL5RKWTU");
-    fetch("/api/polls", {
-      method: "POST",
-      headers: headers,
-      body: JSON.stringify(object)
-    })
-      .then(res => res.json())
-      .catch(err => {console.log(err)});
+    setTokenHeader("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZjYyZDEyMDg3N2VhMDYyMzZhOTYzZSIsInVzZXJuYW1lIjoiYmFuYW5hIiwiaWF0IjoxNTI2MjU5NDA0fQ.75AsF0wQw5y4427_43S_rEylM7Kfd_s299fzL5RKWTU");
+    apiCall("POST", "/api/polls", object);
+
     this.props.history.push("/");
   }
 

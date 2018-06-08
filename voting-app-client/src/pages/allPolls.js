@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { apiCall } from "../service/api";
 
 class AllPolls extends Component {
   constructor() {
@@ -13,13 +14,9 @@ class AllPolls extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/polls')
-      .then(res => res.json())
+    apiCall("GET", '/api/polls')
       .then(data => {
         this.setState({ allPolls: data });
-      })
-      .catch(err => {
-        console.log(err);
       });
   }
 

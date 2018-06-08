@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, Link, withRouter } from "react-router-dom";
+import { apiCall } from "../service/api";
 
 class Poll extends Component {
   constructor(props) {
@@ -18,27 +19,15 @@ class Poll extends Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZjYyZDEyMDg3N2VhMDYyMzZhOTYzZSIsInVzZXJuYW1lIjoiYmFuYW5hIiwiaWF0IjoxNTI2MjU5NDA0fQ.75AsF0wQw5y4427_43S_rEylM7Kfd_s299fzL5RKWTU");
-    fetch(`/api/polls/${this.state.poll._id}`, {
-      method: "GET",
-      headers: headers,
-      body: this.state.checked
-    })
-      .then(res => res.json())
-      .catch(err => {console.log(err)});
+    let data = this.state.checked;
+    apiCall("POST", `/api/polls/${this.state.poll._id}`, data);
     this.props.history.push(`/polls/${this.state.poll._id}`);
   }
 
   componentDidMount() {
-    fetch(`/api/polls/${this.props.match.params.id}`)
-      .then(res => res.json())
+    apiCall("GET", `/api/polls/${this.props.match.params.id}`)
       .then(data => {
         this.setState({poll: data});
-      })
-      .catch(err => {
-        console.log(err);
       });
   }
 
