@@ -20,7 +20,7 @@ class Poll extends Component {
   handleSubmit(event) {
     event.preventDefault();
     let data = this.state.checked;
-    apiCall("POST", `/api/polls/${this.state.poll._id}`, data);
+    apiCall("PUT", `/api/polls/${this.state.poll._id}`, {data: data});
     this.props.history.push(`/polls/${this.state.poll._id}`);
   }
 

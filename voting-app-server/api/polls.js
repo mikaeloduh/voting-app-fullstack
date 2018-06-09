@@ -51,13 +51,23 @@ async function deletePoll(req, res, next) {
   }
 }
 
-// modifyPoll a poll
+// Modify a poll
 async function modifyPoll(req, res, next) {
   try {
-    let inputOpts = req.body.options;
+    let inputId = req.body.data;
+    let originDoc = await db.Poll.findById(req.params.poll_id);
+    let newOptions = originDoc.options.map(d => {
+      if (d._id == inputId) {
+        d.votes += 1;
+        return d;
+      } else {
+        return d;
+      }
+    });
+    console.log("newDocOptions:", newOptions);
     let updatedDoc = await db.Poll.findByIdAndUpdate(
       req.params.poll_id,
-      { $set: { options: inputOpts } },
+      { $set: { options: newOptions } },
       {new: true}
     );
     return res.status(200).json(updatedDoc);

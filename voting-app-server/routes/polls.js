@@ -4,6 +4,7 @@ const { authenticate, authorize } = require("../api/auth");
 
 const router = express.Router();
 
+// Path - /api/polls ...
 router.get("/", listAllPolls);
 router.post("/", authenticate, createPoll);
 router.get("/:poll_id", getPoll);
