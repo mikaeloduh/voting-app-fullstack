@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import { apiCall } from "../service/api";
 
-class Profile extends Component {
+class Logout extends Component {
   constructor() {
     super();
+    // this.handleLoginClick = this.handleLoginClick.bind(this);
+    // this.handleLogoutClick = this.handleLogoutClick.bind(this);
     this.state = {isLoggedIn: false};
   }
 
@@ -14,10 +16,10 @@ class Profile extends Component {
 
     return (
       <div>
-        <h3>Profile page</h3>
+        <h3>You are logged-out</h3>
       </div>
     );
   }
 }
 
-export default Profile;
+export default Logout;

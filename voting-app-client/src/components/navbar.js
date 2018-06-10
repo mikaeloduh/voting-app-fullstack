@@ -2,11 +2,21 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Navbar extends Component {
-  logout(e) {
-      e.preventDefault();
+  constructor(props) {
+    super(props);
+  }
+
+  handleLoginClick() {
+    this.props.onLogin;
+  }
+
+  handleLogoutClick() {
+    this.props.onLogout;
   }
 
   render() {
+    const isLoggedIn = this.props.isLoggedIn;
+
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
         <a className="navbar-brand" href="/">Navbar</a>
@@ -31,10 +41,14 @@ class Navbar extends Component {
           </ul>
           <ul className="nav navbar-nav navbar-right">
             <li className="nav-item">
-              <Link className="nav-link" to="/login">Log in</Link>
+              {isLoggedIn ? (
+                <Link className="nav-link" to="/logout" onClick={this.handleLogoutClick}>Log out</Link>
+              ) : (
+                <Link className="nav-link" to="/login">Log in</Link>
+              )}
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/signin">Sign up</Link>
+              <Link className="nav-link" to="/signup">Sign up</Link>
             </li>
           </ul>
         </div>
