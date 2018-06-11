@@ -39,7 +39,7 @@ class App extends Component {
             <Route path="/poll/:id" component={Poll} />
             <Route path="/profile" component={Profile} />
             <Route path="/test" component={Test} />
-            <Route path="/login" component={Login} />
+            <Route path="/login" render={props => { return (<Login onLogin={this.handleLoginClick}/>); }} />
             <Route path="/logout" component={Logout} />
             <Route path="/signup" component={Signup} />
           </Switch>
