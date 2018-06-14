@@ -21,6 +21,7 @@ class App extends Component {
   }
 
   handleLoginClick() {
+    console.log("ture");
     this.setState({isLoggedIn: true});
   }
 
@@ -29,9 +30,11 @@ class App extends Component {
   }
 
   render() {
+    const isLoggedIn = this.state.isLoggedIn;
+    console.log("isLoggedIn:", isLoggedIn);
     return (
       <div className="App">
-        <Navbar isLoggedIn={this.state.isLoggedIn} onLogin={this.handleLoginClick} onLogout={this.handleLogoutClick}/>
+        <Navbar isLoggedIn={isLoggedIn} onLogin={this.handleLoginClick} onLogout={this.handleLogoutClick}/>
         <div className="container">
           <Switch>
             <Route exact path="/" component={AllPolls} />
