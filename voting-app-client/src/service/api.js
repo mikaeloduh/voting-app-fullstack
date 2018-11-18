@@ -14,12 +14,12 @@ function apiCall(method, path, data) {
     url: path,
     data: data
   })
-    .then(res => {
-      return (res.data);
-    })
-    .catch(err => {
-      return ("err.response.data.error");
-    });
+  .then(res => {
+    return (res.data);
+  })
+  .catch(err => {
+    return ("err.response.data.error");
+  });
 }
 
 export { apiCall, setTokenHeader };

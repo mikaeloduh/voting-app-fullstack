@@ -6,7 +6,7 @@ async function signup(req, res, next) {
     let user = await db.User.create(req.body);
     let { id, username } = user;
     let token = jwt.sign({id, username}, process.env.SECRET);
-    return res.status(200).json({id, username, token});
+    return res.status(201).json({id, username, token});
   }
   catch(err) {
     if(err.code === 11000) {
@@ -39,7 +39,7 @@ async function login(req, res, next) {
 
 async function authenticate(req, res, next) {
   try {
-    let auth = req.headers.authorization;
+    let auth = req.headers.Authorization;
     if (!auth) {
       return next({status: 400, message: "Please supply a vaild token."});
     } else {

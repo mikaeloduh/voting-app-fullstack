@@ -45,9 +45,9 @@ class NewPoll extends Component {
       topic: topic,
       options: opts
     };
-    setTokenHeader("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVhZjYyZDEyMDg3N2VhMDYyMzZhOTYzZSIsInVzZXJuYW1lIjoiYmFuYW5hIiwiaWF0IjoxNTI2MjU5NDA0fQ.75AsF0wQw5y4427_43S_rEylM7Kfd_s299fzL5RKWTU");
-    apiCall("POST", "/api/polls", object);
-
+    let token = localStorage.jwtToken;
+    setTokenHeader(token);
+    apiCall("post", "/api/polls", object);
     this.props.history.push("/");
   }
 
