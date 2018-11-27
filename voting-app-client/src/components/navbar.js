@@ -2,20 +2,22 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
   }
 
-  handleLoginClick() {
-    this.props.onLogin;
+  componentWillUpdate() {
   }
 
   handleLogoutClick() {
-    this.props.onLogout;
+    localStorage.clear();
+    this.props.handleLoginState(false, NaN);
   }
 
   render() {
     const isLoggedIn = this.props.isLoggedIn;
+    const user = this.props.uid;
 
     return (
       <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -48,7 +50,11 @@ class Navbar extends Component {
               )}
             </li>
             <li className="nav-item">
-              <Link className="nav-link" to="/signup">Sign up</Link>
+              {isLoggedIn ? (
+                <Link className="nav-link" to="/profile">UID: {user}</Link>
+              ) : (
+                <Link className="nav-link" to="/signup">Sign up</Link>
+              )}
             </li>
           </ul>
         </div>

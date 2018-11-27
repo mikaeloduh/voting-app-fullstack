@@ -39,10 +39,8 @@ async function login(req, res, next) {
 
 async function authenticate(req, res, next) {
   try {
-    let auth = req.headers.Authorization;
-    if (!auth) {
-      return next({status: 400, message: "Please supply a vaild token."});
-    } else {
+    let auth = req.headers.authorization;
+    if (auth) {
       let token = auth.split(" ")[1];
       jwt.verify(token, process.env.SECRET, (err, decode) => {
         if(decode) {
@@ -52,6 +50,8 @@ async function authenticate(req, res, next) {
           return next({status: 400, message: "Please login."});
         }
       });
+    } else {
+      return next({status: 400, message: "Please supply a vaild token."});
     }
   }
   catch(err) {
@@ -65,7 +65,7 @@ async function authorize(req, res, next) {
     if(req.body.user == creater) {
       return next();
     } else {
-      return next({status: 400, message: "Unthorized process."});
+      return next({status: 401, message: "Unthorized process."});
     }
   }
   catch(err) {

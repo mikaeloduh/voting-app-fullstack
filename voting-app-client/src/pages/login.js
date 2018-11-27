@@ -40,11 +40,10 @@ class Login extends Component {
     apiCall("post", "auth/login", obj)
       .then(data => {
         localStorage.setItem("jwtToken", data.token);
+        localStorage.setItem("user", data.id);
+        this.props.onLogin(true, data.id);
         this.props.history.push(`/profile`);
       });
-
-    // this.props.onLogin;
-    // this.props.history.push(`/profile`);
   }
 
   render() {
@@ -77,7 +76,7 @@ class Login extends Component {
                 value={this.state.password}
                 onChange={this.handleFormChange} />
             </div>
-            <button type="button" onClick={this.handleSubmitForm} className="btn btn-primary">Submit</button>
+            <button type="button" className="btn btn-primary" onClick={this.handleSubmitForm}>Submit</button>
           </fieldset>
         </form>
       </div>

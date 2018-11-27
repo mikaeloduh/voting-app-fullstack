@@ -41,11 +41,13 @@ class NewPoll extends Component {
     event.preventDefault();
     let { topic, options } = this.state;
     let opts = options.map( val => {return {name: val, votes: 0}} );
+    let user = localStorage.getItem("user")
     let object = {
+      user: user,
       topic: topic,
       options: opts
     };
-    let token = localStorage.jwtToken;
+    let token = localStorage.getItem("jwtToken");
     setTokenHeader(token);
     apiCall("post", "/api/polls", object);
     this.props.history.push("/");
@@ -66,34 +68,40 @@ class NewPoll extends Component {
         </div>
       )
     });
+    let uid = localStorage.getItem("user");
 
     return (
-    <form className="row justify-content-md-center text-center" onSubmit={this.handleSubmit}>
-        <div className="col-sm-12 col-md-10">
-          <legend>Create New Poll</legend>
-          <div className="form-group row">
-            <label htmlFor="topicInput" className="col-sm-12 col-md-2">Topic</label>
+      <div>
+        {uid ? (
+          <form className="row justify-content-md-center text-center" onSubmit={this.handleSubmit}>
             <div className="col-sm-12 col-md-10">
-              <input id="topicInput" className="form-control" type="text" value={this.state.topic} onChange={this.handleTopicChange} />
-            </div>
-          </div>
+              <legend>Create New Poll</legend>
+              <div className="form-group row">
+                <label htmlFor="topicInput" className="col-sm-12 col-md-2">Topic</label>
+                <div className="col-sm-12 col-md-10">
+                  <input id="topicInput" className="form-control" type="text" value={this.state.topic} onChange={this.handleTopicChange} />
+                </div>
+                </div>
 
-          {optionList}
+              {optionList}
 
-          <div className="form-group row">
-            <label htmlFor="optionInput" className="col-sm-12 col-md-2 col-form-label">Option</label>
-            <div className="input-group col-sm-12 col-md-10">
-              <input id="optionInput" className="form-control" type="text" value={this.state.option} onChange={this.handleOptionChange} />
-              <div className="input-group-append">
-                <button className="btn btn-outline-secondary" type="button" onClick={this.handleAddOption}>Add Option</button>
+              <div className="form-group row">
+                <label htmlFor="optionInput" className="col-sm-12 col-md-2 col-form-label">Option</label>
+                <div className="input-group col-sm-12 col-md-10">
+                  <input id="optionInput" className="form-control" type="text" value={this.state.option} onChange={this.handleOptionChange} />
+                  <div className="input-group-append">
+                    <button className="btn btn-outline-secondary" type="button" onClick={this.handleAddOption}>Add Option</button>
+                  </div>
+                </div>
               </div>
+
+              <input className="btn btn-primary btn-block" type="submit" value="Submit"  />
             </div>
-          </div>
-
-          <input className="btn btn-primary btn-block" type="submit" value="Submit"  />
-        </div>
-      </form>
-
+          </form>
+        ) : (
+          <p>Please login.</p>
+      )}
+      </div>
     );
   }
 }

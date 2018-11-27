@@ -18,7 +18,7 @@ function apiCall(method, path, data) {
     return (res.data);
   })
   .catch(err => {
-    return ("err.response.data.error");
+    return (err.response.data.error);
   });
 }
 

@@ -8,13 +8,20 @@ class Profile extends Component {
   }
 
   componentDidMount() {
+    // apiCall("get", )
   }
 
   render() {
+    const uid = localStorage.getItem("user");
 
     return (
       <div>
         <h3>Profile page</h3>
+        {uid ? (
+          <p>Welcome back User {uid}!</p>
+        ) : (
+          <p>You are not login.</p>
+        )}
       </div>
     );
   }

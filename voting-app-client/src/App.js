@@ -15,26 +15,33 @@ import './App.css';
 class App extends Component {
   constructor() {
     super();
-    this.handleLoginClick = this.handleLoginClick.bind(this);
-    this.handleLogoutClick = this.handleLogoutClick.bind(this);
-    this.state = {isLoggedIn: false};
+    this.handleLoginState = this.handleLoginState.bind(this);
+    this.state = {
+      isLoggedIn: false,
+      uid: NaN
+    };
   }
 
-  handleLoginClick() {
-    console.log("ture");
-    this.setState({isLoggedIn: true});
+  componentDidMount() {
+    let s = localStorage.getItem("user") ? true : false;
+    let u = localStorage.getItem("user") || NaN;
+    this.handleLoginState(s, u);
   }
 
-  handleLogoutClick() {
-    this.setState({isLoggedIn: false});
+  handleLoginState(s, u) {
+    this.setState({isLoggedIn: s});
+    this.setState({uid: u});
   }
 
   render() {
     const isLoggedIn = this.state.isLoggedIn;
+    const uid = this.state.uid;
     console.log("isLoggedIn:", isLoggedIn);
     return (
       <div className="App">
-        <Navbar isLoggedIn={isLoggedIn} onLogin={this.handleLoginClick} onLogout={this.handleLogoutClick}/>
+        <Navbar
+          isLoggedIn={isLoggedIn}
+          uid = {uid} />
         <div className="container">
           <Switch>
             <Route exact path="/" component={AllPolls} />
@@ -42,7 +49,7 @@ class App extends Component {
             <Route path="/poll/:id" component={Poll} />
             <Route path="/profile" component={Profile} />
             <Route path="/test" component={Test} />
-            <Route path="/login" render={props => { return (<Login onLogin={this.handleLoginClick}/>); }} />
+            <Route path="/login" render={props => { return (<Login onLogin={this.handleLoginState} />); }} />
             <Route path="/logout" component={Logout} />
             <Route path="/signup" component={Signup} />
           </Switch>
