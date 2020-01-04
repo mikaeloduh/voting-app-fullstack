@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", listAllPolls);
 router.post("/", authenticate, createPoll);
 router.get("/:poll_id", getPoll);
-router.put("/:poll_id", modifyPoll);
+router.put("/:poll_id", authenticate, modifyPoll);
 router.delete("/:poll_id", authenticate, authorize, deletePoll);
 
 module.exports = router;
