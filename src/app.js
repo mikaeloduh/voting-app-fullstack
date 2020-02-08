@@ -12,8 +12,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.get('/test', function(req, res) {
-  res.status.send('Hello world!');
+app.get("/test", function(req, res) {
+  res.status(200).send('Hello world!');
 });
 
 app.use('/auth', authRoute);
