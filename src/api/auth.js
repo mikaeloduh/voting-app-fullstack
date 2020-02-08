@@ -22,17 +22,27 @@ async function signup(req, res, next) {
 async function login(req, res, next) {
   try {
     let user = await db.User.findOne({email: req.body.email});
-    let { id, username } = user;
-    let isMatch = await user.comparePassword(req.body.password);
+    if (user===null)
+      throw new Error('user not found.');
 
-    if(isMatch) {
-      let token = jwt.sign({id, username}, process.env.SECRET);
-      return res.status(200).send({id, username, token});
-    } else {
-      return next({status: 400, message: "Invalid email or password"});
+    let { id, username } = user;
+
+    let isMatch = await user.comparePassword(req.body.password);
+    if (!isMatch) {
+      let error = new Error('')
+      error.status = 401;
+      err.type = 'login API';
+      throw new Error('Invalid password');
     }
+
+    return res.status(200).send({
+      uid: id, 
+      token: jwt.sign({ id , username }, process.env.SECRET)
+    });
   }
   catch(err) {
+    err.type = 'login API'
+
     return next(err);
   }
 };
