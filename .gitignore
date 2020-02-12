@@ -86,7 +86,7 @@ typings/
 .yarn-integrity
 
 # dotenv environment variables file
-.env
+# .env
 
 package-lock.json
 bootstrap-4.1.1/
