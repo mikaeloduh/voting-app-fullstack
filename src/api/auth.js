@@ -1,5 +1,15 @@
 const jwt = require('jsonwebtoken');
+const Joi = require('joi');
+
 const db  = require('../models');
+
+const signupSchema = {
+  body: {
+    email: Joi.string().required(),
+    username: Joi.string().required(),
+    password: Joi.string().required()
+  }
+};
 
 async function signup(req, res, next) {
   try {
@@ -16,6 +26,13 @@ async function signup(req, res, next) {
       status: 400,
       message: err.message
     });
+  }
+};
+
+const loginSchema = {
+  body: {
+    email: Joi.string().required(),
+    password: Joi.string().required()
   }
 };
 
@@ -87,3 +104,5 @@ module.exports.login = login;
 module.exports.signup = signup;
 module.exports.authenticate = authenticate;
 module.exports.authorize = authorize;
+module.exports.signupSchema = signupSchema;
+module.exports.loginSchema = loginSchema;

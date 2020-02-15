@@ -8,7 +8,7 @@ const createPollSchema = {
     options: Joi.array().items(Joi.object().keys({
       option: Joi.string().required(),
       votes: Joi.number().required()
-    })).min(1).requied()
+    })).min(1).required()
   }
 };
 

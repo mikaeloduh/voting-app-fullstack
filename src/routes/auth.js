@@ -1,6 +1,7 @@
 const express = require('express');
+const validate = require('express-validation');
 
-const { signup, login } = require("../api/auth")
+const { signup, login, signupSchema, loginSchema } = require("../api/auth")
 
 const router = express.Router();
 
@@ -19,7 +20,7 @@ const router = express.Router();
  *     "token": "eyJhbGciOiJIUzVCJ9.eyJpZCI6IjVlNyUwMzR9.lDXv4B02L9MsnLnvZ0"
  *   }
  */
-router.post("/signup", signup);
+router.post("/signup", validate(signupSchema), signup);
 
 /**
  * @api {post} /auth/login User login
@@ -34,6 +35,6 @@ router.post("/signup", signup);
  *     "token": "eyJhbGckpXVCJ9.eyJpZmNDhkOCIsInVzNDc1NjQ.3mOyVC07tM7JEeJk"
  *   }
  */
-router.post("/login", login);
+router.post("/login", validate(loginSchema), login);
 
 module.exports = router;
