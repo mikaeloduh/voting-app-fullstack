@@ -1,6 +1,13 @@
 const express = require('express');
+const validate = require('express-validation');
 
-const { createPoll, listAllPolls, getPoll, deletePoll, modifyPoll } = require("../api/polls");
+const { createPoll,
+        listAllPolls,
+        getPoll,
+        deletePoll,
+        modifyPoll,
+        createPollSchema,
+        modifyPollSchema } = require("../api/polls");
 const { authenticate, authorize } = require("../api/auth");
 
 const router = express.Router();
@@ -21,14 +28,14 @@ router.get("/", listAllPolls);
  *   {
  *     "topic": "How do you like your steak?",
  *     "options": [
- *       { "name": "rare", "votes": 0 },
- *       { "name": "medium", "votes": 0 },
+ *       { "option": "rare", "votes": 0 },
+ *       { "option": "medium", "votes": 0 },
  *     ]
  *   }
  * 
  * @apiSuccess (201) {Object} The created `Poll` object
  */
-router.post("/", authenticate, createPoll);
+router.post("/", authenticate, validate(createPollSchema), createPoll);
 
 /**
  * @api {get} /api/poll/:poll_id Retreve a poll detail by `:poll_id`
@@ -66,7 +73,7 @@ router.get("/:poll_id", getPoll);
  * @apiParamExample {json} Request-Example: 
  *   Fields to be update (See @api {post} /api/poll)
  */
-router.put("/:poll_id", authenticate, modifyPoll);
+router.put("/:poll_id", authenticate, validate(modifyPollSchema), modifyPoll);
 
 /**
  * @api {delete} /api/poll/:poll_id Delete a poll by `:poll_id`

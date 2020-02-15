@@ -1,4 +1,16 @@
+const Joi = require('joi');
+
 const db  = require('../models');
+
+const createPollSchema = {
+  body: {
+    topic: Joi.string().required(),
+    options: Joi.array().items(Joi.object().keys({
+      option: Joi.string().required(),
+      votes: Joi.number().required()
+    })).min(1).requied()
+  }
+};
 
 // Create a poll
 async function createPoll(req, res, next) {
@@ -51,6 +63,12 @@ async function deletePoll(req, res, next) {
   }
 }
 
+const modifyPollSchema = {
+  body: {
+    data: Joi.string().required()
+  }
+};
+
 // Modify a poll
 async function modifyPoll(req, res, next) {
   try {
@@ -77,9 +95,10 @@ async function modifyPoll(req, res, next) {
   }
 }
 
-
 module.exports.createPoll = createPoll;
 module.exports.listAllPolls = listAllPolls;
 module.exports.getPoll = getPoll;
 module.exports.deletePoll = deletePoll;
 module.exports.modifyPoll = modifyPoll;
+module.exports.createPollSchema = createPollSchema;
+module.exports.modifyPollSchema = modifyPollSchema;
