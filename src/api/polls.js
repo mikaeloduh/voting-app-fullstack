@@ -20,9 +20,12 @@ async function createPoll(req, res, next) {
       topic: req.body.topic,
       options: req.body.options
     });
+
     return res.status(201).json(poll);
   }
   catch(err) {
+    err.type = 'createPoll';
+
     return next(err);
   }
 }
@@ -31,9 +34,12 @@ async function createPoll(req, res, next) {
 async function listAllPolls(req, res, next) {
   try {
     let messages = await db.Poll.find();
+
     return res.status(200).json(messages);
   }
   catch(err) {
+    err.type = 'listAllPolls';
+
     return next(err);
   }
 }
@@ -42,9 +48,12 @@ async function listAllPolls(req, res, next) {
 async function getPoll(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
+
     return res.status(200).json(poll);
   }
   catch(err) {
+    err.type = 'getPoll';
+
     return next(err);
   }
 }
@@ -59,6 +68,8 @@ async function deletePoll(req, res, next) {
     });
   }
   catch(err) {
+    err.type = 'deletePoll';
+
     return next(err);
   }
 }
@@ -82,15 +93,19 @@ async function modifyPoll(req, res, next) {
         return d;
       }
     });
-    console.log("newDocOptions:", newOptions);
+
     let updatedDoc = await db.Poll.findByIdAndUpdate(
       req.params.poll_id,
       { $set: { options: newOptions } },
       {new: true}
     );
+    
     return res.status(200).json(updatedDoc);
   }
   catch(err) {
+    err.type = 'modifyPoll';
+    err.status = 400;
+
     return next(err);
   }
 }
