@@ -80,27 +80,21 @@ const modifyPollSchema = {
   }
 };
 
-// Modify a poll
+/* Modify a poll (e.g., make a poll) */
 async function modifyPoll(req, res, next) {
   try {
-    let inputId = req.body.data;
-    let originDoc = await db.Poll.findById(req.params.poll_id);
-    let newOptions = originDoc.options.map(d => {
-      if (d._id == inputId) {
-        d.votes += 1;
-        return d;
-      } else {
-        return d;
-      }
-    });
-
-    let updatedDoc = await db.Poll.findByIdAndUpdate(
-      req.params.poll_id,
-      { $set: { options: newOptions } },
-      {new: true}
+    let updated = await db.Poll.update(
+      { "_id": req.params.poll_id, "options._id": req.body.data },
+      { "$inc": { "options.$.votes": 1 } },
+      { upsert: false, new : true }
     );
-    
-    return res.status(200).json(updatedDoc);
+
+    if (updated.ok !== 1)
+      throw new Error('update failed');
+
+    let newDoc = await db.Poll.findById(req.params.poll_id);
+
+    return res.status(200).json({ is_success: true, data: newDoc });
   }
   catch(err) {
     err.type = 'modifyPoll';
