@@ -4,21 +4,28 @@ const Joi = require('joi');
 const db = require('../models');
 
 const signupSchema = {
+  options: { allowUnknown: { body: false } },
   body: {
-    email: Joi.string().required(),
-    username: Joi.string().required(),
-    password: Joi.string().required()
+    data: Joi.object().keys({
+      email: Joi.string().required(),
+      username: Joi.string().required(),
+      password: Joi.string().required()
+    }).required()
   }
 };
 
 /* User singup */
 async function signup(req, res, next) {
   try {
-    let user = await db.User.create(req.body);
-    let { id, username } = user;
-    let token = jwt.sign({ id, username }, process.env.SECRET);
+    let user = await db.User.create(req.body.data);
 
-    return res.status(201).json({ id, username, token });
+    return res.status(201).json({
+      is_success: true,
+      data: {
+        username: user.username,
+        token: jwt.sign({ id: user.id }, process.env.SECRET)
+      }
+    });
   } catch (err) {
     err.type = 'signup';
     err.status = 400;
@@ -31,28 +38,32 @@ async function signup(req, res, next) {
 }
 
 const loginSchema = {
+  options: { allowUnknown: { body: false } },
   body: {
-    email: Joi.string().required(),
-    password: Joi.string().required()
+    data: Joi.object().keys({
+      email: Joi.string().required(),
+      password: Joi.string().required()
+    }).required()
   }
 };
 
 /* User login */
 async function login(req, res, next) {
   try {
-    let user = await db.User.findOne({ email: req.body.email });
+    let user = await db.User.findOne({ email: req.body.data.email });
     if (user === null)
       throw new Error('user not found.');
 
-    let { id, username } = user;
-
-    let isMatch = await user.comparePassword(req.body.password);
+    let isMatch = await user.comparePassword(req.body.data.password);
     if (!isMatch)
       throw new Error('Invalid password');
 
     return res.status(200).send({
-      uid: id,
-      token: jwt.sign({ id, username }, process.env.SECRET)
+      is_success: true,
+      data: {
+        username: user.username,
+        token: jwt.sign({ id: user.id }, process.env.SECRET)
+      }
     });
   } catch (err) {
     err.type = 'login';
@@ -66,7 +77,6 @@ async function login(req, res, next) {
 async function authenticate(req, res, next) {
   try {
     let auth = req.headers.authorization;
-
     if (!auth) 
       throw new Error('Please supply a vaild token.');
 
