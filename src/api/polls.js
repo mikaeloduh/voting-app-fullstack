@@ -4,26 +4,28 @@ const db = require('../models');
 
 const createPollSchema = {
   body: {
-    topic: Joi.string().required(),
-    options: Joi.array().items(
-      Joi.object().keys({
-        option: Joi.string().required(),
-        votes: Joi.number().required()
-      }
-    )).min(1).required()
+    data: Joi.object().keys({
+      topic: Joi.string().required(),
+      options: Joi.array().items(
+        Joi.object().keys({
+          option: Joi.string().required(),
+          votes: Joi.number().required()
+        }
+      )).min(1).required()
+    }).required()
   }
 };
 
 /* Create a poll */
 async function createPoll(req, res, next) {
   try {
-    let poll = await db.Poll.create({
+    let created_poll = await db.Poll.create({
       creater: req.body.user,
-      topic: req.body.topic,
-      options: req.body.options
+      topic: req.body.data.topic,
+      options: req.body.data.options
     });
 
-    return res.status(201).json(poll);
+    return res.status(201).json({ is_success: true, data: created_poll });
   } catch (err) {
     err.type = 'createPoll';
 
@@ -34,9 +36,9 @@ async function createPoll(req, res, next) {
 /* List all polls */
 async function listAllPolls(req, res, next) {
   try {
-    let messages = await db.Poll.find();
+    let polls = await db.Poll.find();
 
-    return res.status(200).json(messages);
+    return res.status(200).json({ is_success: true, data: polls });
   } catch (err) {
     err.type = 'listAllPolls';
 
@@ -49,7 +51,7 @@ async function getPoll(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
 
-    return res.status(200).json(poll);
+    return res.status(200).json({ is_success: ture, data: poll });
   } catch (err) {
     err.type = 'getPoll';
 
@@ -75,7 +77,9 @@ async function deletePoll(req, res, next) {
 
 const modifyPollSchema = {
   body: {
-    data: Joi.string().required()
+    data: Joi.object().keys({
+      option_id: Joi.string().required()
+    }).required()
   }
 };
 
@@ -83,7 +87,7 @@ const modifyPollSchema = {
 async function modifyPoll(req, res, next) {
   try {
     let updated = await db.Poll.update(
-      { _id: req.params.poll_id, 'options._id': req.body.data },
+      { _id: req.params.poll_id, 'options._id': req.body.data.option_id },
       { $inc: { 'options.$.votes': 1 } },
       { upsert: false, new: true }
     );
