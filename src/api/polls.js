@@ -3,6 +3,7 @@ const Joi = require('joi');
 const db = require('../models');
 
 const createPollSchema = {
+  options: { stripUnknown: { body: true } },
   body: {
     data: Joi.object().keys({
       topic: Joi.string().required(),
@@ -76,6 +77,7 @@ async function deletePoll(req, res, next) {
 }
 
 const modifyPollSchema = {
+  options: { stripUnknown: { body: true } },
   body: {
     data: Joi.object().keys({
       option_id: Joi.string().required()
