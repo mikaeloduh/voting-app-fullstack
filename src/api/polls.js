@@ -1,18 +1,20 @@
 const Joi = require('joi');
 
-const db  = require('../models');
+const db = require('../models');
 
 const createPollSchema = {
   body: {
     topic: Joi.string().required(),
-    options: Joi.array().items(Joi.object().keys({
-      option: Joi.string().required(),
-      votes: Joi.number().required()
-    })).min(1).required()
+    options: Joi.array().items(
+      Joi.object().keys({
+        option: Joi.string().required(),
+        votes: Joi.number().required()
+      }
+    )).min(1).required()
   }
 };
 
-// Create a poll
+/* Create a poll */
 async function createPoll(req, res, next) {
   try {
     let poll = await db.Poll.create({
@@ -22,36 +24,33 @@ async function createPoll(req, res, next) {
     });
 
     return res.status(201).json(poll);
-  }
-  catch(err) {
+  } catch (err) {
     err.type = 'createPoll';
 
     return next(err);
   }
 }
 
-// List all polls
+/* List all polls */
 async function listAllPolls(req, res, next) {
   try {
     let messages = await db.Poll.find();
 
     return res.status(200).json(messages);
-  }
-  catch(err) {
+  } catch (err) {
     err.type = 'listAllPolls';
 
     return next(err);
   }
 }
 
-// Get a poll
+/* Get the poll detail */
 async function getPoll(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
 
     return res.status(200).json(poll);
-  }
-  catch(err) {
+  } catch (err) {
     err.type = 'getPoll';
 
     return next(err);
@@ -67,8 +66,7 @@ async function deletePoll(req, res, next) {
       is_success: true,
       message: `Poll ${poll._id} removed!`
     });
-  }
-  catch(err) {
+  } catch (err) {
     err.type = 'deletePoll';
 
     return next(err);
@@ -81,13 +79,13 @@ const modifyPollSchema = {
   }
 };
 
-/* Modify a poll (e.g., make a poll) */
+/* Vote for a poll */
 async function modifyPoll(req, res, next) {
   try {
     let updated = await db.Poll.update(
-      { "_id": req.params.poll_id, "options._id": req.body.data },
-      { "$inc": { "options.$.votes": 1 } },
-      { upsert: false, new : true }
+      { _id: req.params.poll_id, 'options._id': req.body.data },
+      { $inc: { 'options.$.votes': 1 } },
+      { upsert: false, new: true }
     );
 
     if (updated.ok !== 1)
@@ -96,8 +94,7 @@ async function modifyPoll(req, res, next) {
     let newDoc = await db.Poll.findById(req.params.poll_id);
 
     return res.status(200).json({ is_success: true, data: newDoc });
-  }
-  catch(err) {
+  } catch (err) {
     err.type = 'modifyPoll';
     err.status = 400;
 
