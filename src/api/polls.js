@@ -85,7 +85,7 @@ const modifyPollSchema = {
   }
 };
 
-/* Vote for a poll */
+/* Vote on the poll */
 async function modifyPoll(req, res, next) {
   try {
     let updated = await db.Poll.update(

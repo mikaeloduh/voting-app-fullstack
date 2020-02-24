@@ -72,7 +72,7 @@ router.post('/', validate(createPollSchema), createPoll);
 router.get('/:poll_id', getPoll);
 
 /**
- * @api {put} /api/pull/:poll_id Vote for a poll
+ * @api {put} /api/pull/:poll_id Vote on a poll
  * @permission authenticate
  *
  * @apiParam {string} option_id Option key would like to vote
