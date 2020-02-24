@@ -10,12 +10,3 @@ mongoose.connect(MONGODB_URI, { keepAlive: true });
 
 module.exports.User = User;
 module.exports.Poll = Poll;
-module.exports.mongoDB = {
-  mongoose,
-  connect: () => {
-    mongoose.connect(MONGODB_URI);
-  },
-  disconnect: done => {
-    mongoose.disconnect(done);
-  }
-};

@@ -37,7 +37,7 @@ router.get('/', listAllPolls);
  *
  * @apiSuccess (201) {Object} The created `Poll` object
  */
-router.post('/', authenticate, validate(createPollSchema), createPoll);
+router.post('/', validate(createPollSchema), createPoll);
 
 /**
  * @api {get} /api/poll/:poll_id Retreve a poll detail by `:poll_id`

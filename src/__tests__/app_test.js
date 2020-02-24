@@ -1,15 +1,21 @@
+const mongoose = require('mongoose');
 const request = require('supertest');
 
+require('dotenv').config();
+
 const app = require('../app');
-const { mongoDB } = require('../models/index');
 
 describe('Test app', () => {
-  beforeAll(() => {
-    mongoDB.connect();
+
+  beforeAll(async () => {
+    connection = await mongoose.connect(process.env.MONGO_URL, {
+      useNewUrlParser: true,
+      useCreateIndex: true
+    });
   });
 
-  afterAll(done => {
-    mongoDB.disconnect(done);
+  afterAll(async () => {
+    await mongoose.disconnect();
   });
 
   test('Test Hello World', async () => {
@@ -17,4 +23,5 @@ describe('Test app', () => {
 
     expect(response.statusCode).toBe(200);
   });
+
 });
