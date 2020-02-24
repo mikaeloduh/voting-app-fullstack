@@ -9,7 +9,7 @@ const errorHandler = require('./api/error');
 const pollsRoute = require('./routes/polls');
 
 const app = express();
-app.use(cors());
+app.use(cors());  // TODO: setup cors configuration only if need be
 app.use(bodyParser.json());
 
 app.get("/test", function(req, res) {
