@@ -5,7 +5,7 @@ function errorHandler(err, req, res, next) {
   if (err instanceof validate.ValidationError)
     return res.status(err.status).json(err);
 
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test') {
     return res.status(err.status || 500).json({
       error: {
         type: err.type,

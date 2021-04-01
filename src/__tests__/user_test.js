@@ -76,4 +76,33 @@ describe('Private Auth API Tests', () => {
     expect(response.body.data).toHaveProperty('token');
   });
 
+  test('Test user fail login with non-exited email', async () => {
+    let response = await request(app)
+      .post('/auth/login')
+      .send({
+        data: {
+          email: 'nonExitedUser@test.com',
+          password: user.password
+        }
+      });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toHaveProperty('message', 'user not found.');
+    expect(response.body.error).toHaveProperty('type', 'login');
+  });
+
+  test('Test user login fail with incorrect password', async () => {
+    let response = await request(app)
+      .post('/auth/login')
+      .send({
+        data: {
+          email: user.email,
+          password: 'incorrectPassword'
+        }
+      });
+
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toHaveProperty('message', 'Invalid password');
+    expect(response.body.error).toHaveProperty('type', 'login');
+  })
 });
