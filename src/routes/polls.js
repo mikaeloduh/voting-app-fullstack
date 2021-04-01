@@ -40,10 +40,10 @@ router.get('/', listAllPolls);
 router.post('/', validate(createPollSchema), createPoll);
 
 /**
- * @api {get} /api/poll/:poll_id Retreve a poll detail by `:poll_id`
+ * @api {get} /api/poll/:poll_id Retrieve a poll detail by `:poll_id`
  *
  * @apiSuccess (200) {String}        _id     `Poll` primary key
- * @apiSuccess (200) {String}        creater `User`'s object key
+ * @apiSuccess (200) {String}        creator `User`'s object key
  * @apiSuccess (200) {String}        topic   Poll Title
  * @apiSuccess (200) {Array<String>} options Array of options
  * @apiSuccess (200) {String}        .votes  Number of vote to option
@@ -54,7 +54,7 @@ router.post('/', validate(createPollSchema), createPoll);
  *     "data": [
  *       {
  *         "_id": "5c00aba4fe60fc1834d3289b",
- *         "creater": "5bee7cb2a2e7075ef9c2f1c8",
+ *         "creator": "5bee7cb2a2e7075ef9c2f1c8",
  *         "topic": "What is your favorite color?",
  *         "options": [
  *           {
@@ -82,7 +82,7 @@ router.get('/:poll_id', getPoll);
  *        "option_id": "5c00aba4fe60fc1834d3289b"
  *     }
  *   }
- * @apiScuss {Object} The updated `Poll` object
+ * @apiSuccess {Object} The updated `Poll` object
  */
 router.put('/:poll_id', authenticate, validate(modifyPollSchema), modifyPoll);
 

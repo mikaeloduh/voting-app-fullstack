@@ -21,7 +21,7 @@ const createPollSchema = {
 async function createPoll(req, res, next) {
   try {
     let created_poll = await db.Poll.create({
-      creater: req.body.user,
+      creator: req.body.user,
       topic: req.body.data.topic,
       options: req.body.data.options
     });
@@ -52,7 +52,7 @@ async function getPoll(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
 
-    return res.status(200).json({ is_success: ture, data: poll });
+    return res.status(200).json({ is_success: true, data: poll });
   } catch (err) {
     err.type = 'getPoll';
 

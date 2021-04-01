@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const pollSchema = new mongoose.Schema({
-  creater: {
+  creator: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: 'User'
   },

@@ -28,7 +28,7 @@ describe('Public Auth API Tests', () => {
       data: {
         email: 'mike@test.com',
         username: 'mike',
-        password: 'testpass123'
+        password: 'testPass123'
       }
     };
     let response = await request(app)
@@ -51,7 +51,7 @@ describe('Private Auth API Tests', () => {
     user = {
       email: 'steve@test.com',
       username: 'steve',
-      password: 'testpass123'
+      password: 'testPass123'
     }
     await db.User.create(user);
   });

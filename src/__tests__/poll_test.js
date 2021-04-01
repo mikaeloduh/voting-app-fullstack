@@ -24,7 +24,7 @@ describe('Public Poll API Tests', () => {
 
   beforeEach(async () => {
     pollDoc = await db.Poll.create({
-      creater: mongoose.Types.ObjectId(),
+      creator: mongoose.Types.ObjectId(),
       topic: 'How would you like your steak?',
       options: [
         { option: 'rare', votes: 0 },
@@ -49,7 +49,7 @@ describe('Public Poll API Tests', () => {
 });
 
 
-describe('Privaet Poll API Tests', () => {
+describe('Private Poll API Tests', () => {
 
   let user;
   let userDoc;
@@ -64,7 +64,7 @@ describe('Privaet Poll API Tests', () => {
     userDoc = await db.User.create(user);
 
     pollDoc = await db.Poll.create({
-      creater: userDoc.id,
+      creator: userDoc.id,
       topic: 'How would you like your steak?',
       options: [
         { option: 'rare', votes: 0 },
@@ -78,7 +78,7 @@ describe('Privaet Poll API Tests', () => {
     await mongoose.connection.db.dropDatabase();
   });
 
-  test('Tesing retrieve all polls', async () => {
+  test('Testing retrieve all polls', async () => {
     let response = await request(app).get('/api/polls');
 
     expect(response.statusCode).toBe(200);
@@ -88,7 +88,7 @@ describe('Privaet Poll API Tests', () => {
   test('Testing create a poll', async () => {
     let payload = {
       data: {
-        topic: 'Whhat is you favor color?',
+        topic: 'What is you favor color?',
         options: [
           { option: 'red', votes: 0 },
           { option: 'green', votes: 0 },

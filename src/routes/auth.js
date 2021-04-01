@@ -6,7 +6,7 @@ const { signup, login, signupSchema, loginSchema } = require('../api/auth');
 const router = express.Router();
 
 /**
- * @api {post} /auth/singup Signup a user
+ * @api {post} /auth/signup Signup a user
  *
  * @apiParam {string} email    User ID (in email format)
  * @apiParam {string} username User's Name

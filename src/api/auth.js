@@ -14,7 +14,7 @@ const signupSchema = {
   }
 };
 
-/* User singup */
+/* User signup */
 async function signup(req, res, next) {
   try {
     let user = await db.User.create(req.body.data);
@@ -78,7 +78,7 @@ async function authenticate(req, res, next) {
   try {
     let auth = req.headers.authorization;
     if (!auth) 
-      throw new Error('Please supply a vaild token.');
+      throw new Error('Please supply a valid token.');
 
     let decode = await jwt.verify(auth.split(' ')[1], process.env.SECRET);
     req.body.user = decode.id;
@@ -100,8 +100,8 @@ async function authorize(req, res, next) {
     if (poll == null || typeof poll === 'undefined')
       throw new Error('Poll dose not exits.');
 
-    if (req.body.user != poll.creater)
-      throw new Error('Unthorized process.');
+    if (req.body.user != poll.creator)
+      throw new Error('Unauthorized process.');
 
     return next();
   } catch (err) {
