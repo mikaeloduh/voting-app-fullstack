@@ -51,17 +51,22 @@ describe('Public Poll API Tests', () => {
 
 describe('Private Poll API Tests', () => {
 
-  let user;
+  let user = {
+    email: 'steve@test.com',
+    username: 'steve',
+    password: 'testPass123'
+  };
+  let anotherUser = {
+    email: 'otherUser@test.com',
+    username: 'otherUser',
+    password: 'otherTestPass456'
+  };
   let userDoc;
   let pollDoc;
 
   beforeEach(async () => {
-    user = {
-      email: 'steve@test.com',
-      username: 'steve',
-      password: 'testpass123'
-    }
     userDoc = await db.User.create(user);
+    anotherUserDoc = await db.User.create(anotherUser);
 
     pollDoc = await db.Poll.create({
       creator: userDoc.id,
@@ -106,6 +111,25 @@ describe('Private Poll API Tests', () => {
     expect(response.body.data).toHaveProperty('topic', payload.data.topic);
   });
 
+  test('Test that an unauthenticated user cannot create a poll', async () => {
+    let payload = {
+      data: {
+        topic: 'What is you favor color?',
+        options: [
+          { option: 'red', votes: 0 },
+          { option: 'green', votes: 0 },
+          { option: 'blue', votes: 0 }
+        ]
+      }
+    };
+    let response = await request(app)
+      .post('/api/polls')
+      .send(payload);
+    
+    expect(response.statusCode).toBe(400);
+    expect(response.body.error).toHaveProperty('type', 'authenticate');
+  });
+
   test('Testing delete a poll', async () => {
     let response = await request(app)
       .delete('/api/polls/' + pollDoc.id)
@@ -116,6 +140,15 @@ describe('Private Poll API Tests', () => {
     expect(response.body).toHaveProperty('message', `Poll ${pollDoc.id} removed!`);
   });
 
+  test('Test that unauthorized user delete a poll should fail', async () => {
+    let response = await request(app)
+      .delete('/api/polls/' + pollDoc.id)
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: anotherUserDoc.id }, process.env.SECRET));
+
+    expect(response.statusCode).toBe(401);
+    expect(response.body.error).toHaveProperty('type', 'authorize');
+  });
+
   test('Testing vote for a poll', async () => {
     let response = await request(app)
       .put('/api/polls/' + pollDoc.id)
@@ -124,6 +157,6 @@ describe('Private Poll API Tests', () => {
 
     expect(response.statusCode).toBe(200);
     expect(response.body.data.options[0].votes).toBe(1);
-  })
+  });
 
 });

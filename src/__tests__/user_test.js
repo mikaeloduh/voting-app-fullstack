@@ -104,5 +104,5 @@ describe('Private Auth API Tests', () => {
     expect(response.statusCode).toBe(400);
     expect(response.body.error).toHaveProperty('message', 'Invalid password');
     expect(response.body.error).toHaveProperty('type', 'login');
-  })
+  });
 });
