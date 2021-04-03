@@ -21,6 +21,8 @@ router.get('/', listAllPolls);
 
 /**
  * @api {post} /api/poll Create a poll
+ * @apiGroup Poll
+ * @apiPermission authenticated
  *
  * @apiParam {String}        topic   The poll topic to create
  * @apiParam {Array<string>} options Options for this poll
@@ -37,7 +39,7 @@ router.get('/', listAllPolls);
  *
  * @apiSuccess (201) {Object} The created `Poll` object
  */
-router.post('/', validate(createPollSchema), createPoll);
+router.post('/', authenticate, validate(createPollSchema), createPoll);
 
 /**
  * @api {get} /api/poll/:poll_id Retrieve a poll detail by `:poll_id`
