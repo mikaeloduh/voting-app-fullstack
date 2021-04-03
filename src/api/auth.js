@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
+const { AppError } = require('../core/error');
 const db = require('../models');
 
 const signupSchema = {
@@ -52,11 +53,11 @@ async function login(req, res, next) {
   try {
     let user = await db.User.findOne({ email: req.body.data.email });
     if (user === null)
-      throw new Error('user not found.');
+      throw new AppError('login', 400, true, 'user not found.');
 
     let isMatch = await user.comparePassword(req.body.data.password);
     if (!isMatch)
-      throw new Error('Invalid password');
+      throw new AppError('login', 400, true, 'Invalid password');
 
     return res.status(200).send({
       is_success: true,
@@ -67,7 +68,6 @@ async function login(req, res, next) {
     });
   } catch (err) {
     err.type = 'login';
-    err.status = 400;
 
     return next(err);
   }
@@ -77,8 +77,8 @@ async function login(req, res, next) {
 async function authenticate(req, res, next) {
   try {
     let auth = req.headers.authorization;
-    if (!auth) 
-      throw new Error('Please supply a valid token.');
+    if (!auth)
+      throw new AppError('authenticate', 400, true, 'Please supply a valid token.');
 
     let decode = await jwt.verify(auth.split(' ')[1], process.env.SECRET);
     req.body.user = decode.id;
@@ -86,7 +86,6 @@ async function authenticate(req, res, next) {
     return next();
   } catch (err) {
     err.type = 'authenticate';
-    err.status = 400;
 
     return next(err);
   }
@@ -98,15 +97,14 @@ async function authorize(req, res, next) {
     let poll = await db.Poll.findById(req.params.poll_id);
 
     if (poll == null || typeof poll === 'undefined')
-      throw new Error('Poll dose not exits.');
+      throw new AppError('authorize', 404, true, 'Poll dose not exits.');
 
     if (req.body.user != poll.creator)
-      throw new Error('Unauthorized process.');
+      throw new AppError('authorize', 401, true, 'Unauthorized process.');
 
     return next();
   } catch (err) {
     err.type = 'authorize';
-    err.status = 401;
 
     return next(err);
   }
