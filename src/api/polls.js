@@ -1,5 +1,6 @@
 const Joi = require('joi');
 
+const { AppError } = require('../core/error');
 const db = require('../models');
 
 const createPollSchema = {
@@ -95,14 +96,13 @@ async function modifyPoll(req, res, next) {
     );
 
     if (updated.ok !== 1)
-      throw new Error('update failed');
+      throw new AppError('modifyPoll', 500, false, 'update failed');
 
     let newDoc = await db.Poll.findById(req.params.poll_id);
 
     return res.status(200).json({ is_success: true, data: newDoc });
   } catch (err) {
     err.type = 'modifyPoll';
-    err.status = 400;
 
     return next(err);
   }
