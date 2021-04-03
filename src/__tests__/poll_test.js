@@ -84,7 +84,9 @@ describe('Private Poll API Tests', () => {
   });
 
   test('Testing retrieve all polls', async () => {
-    let response = await request(app).get('/api/polls');
+    let response = await request(app)
+      .get('/api/polls')
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET));
 
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toHaveLength(1);
