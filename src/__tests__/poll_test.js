@@ -161,4 +161,12 @@ describe('Private Poll API Tests', () => {
     expect(response.body.data.options[0].votes).toBe(1);
   });
 
+  test('Test that voting for a non-exited poll should receive bad request', async () => {
+    let response = await request(app)
+      .put('/api/polls/' + 'nonExitedPollId')
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET))
+      .send({ data: { option_id: 'nonExitedOptionsId' } });
+
+    expect(response.statusCode).toBe(500);
+  });
 });
