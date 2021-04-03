@@ -8,5 +8,6 @@ dotenv.config({ verbose: true });
 const PORT = process.env.PORT || 8081;
 
 app.listen(PORT, function() {
-  console.log(`Server is starting on port ${PORT}`);
+  logger.log('info', `Server is starting on port ${PORT}`, { label: 'server' });
 });
+

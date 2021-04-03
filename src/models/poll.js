@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const { logger } = require('../core/logger');
+
 const pollSchema = new mongoose.Schema({
   creator: {
     type: mongoose.SchemaTypes.ObjectId,
@@ -23,11 +25,11 @@ const pollSchema = new mongoose.Schema({
 });
 
 pollSchema.pre('save', () => {
-  console.log('about to save poll....');
+  logger.log('info', 'about to save poll....', { label: 'pollSchema' });
 });
 
 pollSchema.post('save', () => {
-  console.log('Poll saved!');
+  logger.log('info', 'Poll saved!', { label: 'pollSchema' });
 });
 
 const Poll = mongoose.model('Poll', pollSchema);

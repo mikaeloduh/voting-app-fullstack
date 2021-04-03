@@ -1,7 +1,10 @@
 const validate = require('express-validation');
 
-// TODO: Create a proxy for expectation logging
+const { logger } = require('../core/logger');
+
 function errorHandler(err, req, res, next) {
+  logger.log('error', err.stack, {label: err.type});
+
   if (err instanceof validate.ValidationError)
     return res.status(err.statusCode || err.status).json(err);
 
