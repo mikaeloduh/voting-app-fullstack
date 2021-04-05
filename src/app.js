@@ -6,6 +6,7 @@ const express = require('express');
 const authRoute = require('./routes/auth');
 const errorHandler = require('./api/error');
 const pollsRoute = require('./routes/polls');
+const timeoutHandler = require('./middleware/timeout');
 
 const app = express();
 
@@ -19,6 +20,10 @@ app.use(cors({
   optionsSuccessStatus: 204
 }));
 
+/**
+ * Setup and handle timeout request
+ */
+app.use(timeoutHandler);
 app.use(bodyParser.json());
 
 app.get("/test", function(req, res) {
