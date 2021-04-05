@@ -1,5 +1,7 @@
 const { createLogger, transports, format } = require('winston');
 
+const labelFormat = format.label();
+
 const devConfig = {
   level: 'debug',
   format: format.combine(
@@ -60,4 +62,25 @@ const productionConfig = {
   return createLogger(productionConfig);
 })();
 
-module.exports = { logger };
+const stream = {
+  stdout: {
+    // eslint-disable-next-line no-unused-vars
+    write: function (message, encoding) {
+      logger.log(labelFormat.transform({
+        level: 'http',
+        message: message.substring(0, message.lastIndexOf('\n'))
+      }, {label: 'request'}));
+    }
+  },
+  stderr: {
+    // eslint-disable-next-line no-unused-vars
+    write: function (message, encoding) {
+      logger.log(labelFormat.transform({
+        level: 'error',
+        message: message.substring(0, message.lastIndexOf('\n'))
+      }, {label: 'request'}));
+    }
+  }
+};
+
+module.exports = { logger, stream };
