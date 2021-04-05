@@ -29,10 +29,9 @@ async function signup(req, res, next) {
     });
   } catch (err) {
     err.type = 'signup';
-    err.status = 400;
 
     if (err.code === 11000)
-      err.message = 'username or email already exit';
+      return next(new AppError('signup', 400, true, 'username or email already exists'));
 
     return next(err);
   }
