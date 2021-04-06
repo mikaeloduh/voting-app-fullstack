@@ -3,6 +3,11 @@ type: docker
 name: default
 
 steps:
+- name: install
+  image: node
+  commands:
+  - npm ci
+
 - name: test
   image: node
   commands:
