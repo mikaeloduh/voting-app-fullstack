@@ -1,5 +1,7 @@
 # Build a Voting App (Node backend)
 
+[![Build Status](https://cloud.drone.io/api/badges/mikaeloduh/voting-app-fullstack/status.svg)](https://cloud.drone.io/mikaeloduh/voting-app-fullstack)
+
 ## Prerequisite & Install
 
 - Node.js ^8.0
