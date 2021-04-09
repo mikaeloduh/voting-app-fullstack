@@ -1,11 +1,12 @@
+const config = require('config');
 const mongoose = require('mongoose');
 const request = require('supertest');
 const jwt = require('jsonwebtoken');
 
-require('dotenv').config();
-
 const db = require('../models');
 const app = require('../app');
+
+const SECRET = config.get('secret');
 
 beforeAll(async () => {
   connection = await mongoose.connect(process.env.MONGO_URL, {
@@ -86,7 +87,7 @@ describe('Private Poll API Tests', () => {
   test('Testing retrieve all polls', async () => {
     let response = await request(app)
       .get('/api/polls')
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET));
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, SECRET));
 
     expect(response.statusCode).toBe(200);
     expect(response.body.data).toHaveLength(1);
@@ -105,7 +106,7 @@ describe('Private Poll API Tests', () => {
     };
     let response = await request(app)
       .post('/api/polls')
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET))
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, SECRET))
       .send(payload);
     
     expect(response.statusCode).toBe(201);
@@ -135,7 +136,7 @@ describe('Private Poll API Tests', () => {
   test('Testing delete a poll', async () => {
     let response = await request(app)
       .delete('/api/polls/' + pollDoc.id)
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET));
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, SECRET));
 
     expect(response.statusCode).toBe(200);
     expect(response.body).toHaveProperty('is_success', true);
@@ -145,7 +146,7 @@ describe('Private Poll API Tests', () => {
   test('Test that unauthorized user delete a poll should fail', async () => {
     let response = await request(app)
       .delete('/api/polls/' + pollDoc.id)
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: anotherUserDoc.id }, process.env.SECRET));
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: anotherUserDoc.id }, SECRET));
 
     expect(response.statusCode).toBe(401);
     expect(response.body.error).toHaveProperty('type', 'authorize');
@@ -154,7 +155,7 @@ describe('Private Poll API Tests', () => {
   test('Testing vote for a poll', async () => {
     let response = await request(app)
       .put('/api/polls/' + pollDoc.id)
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET))
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, SECRET))
       .send({ data: { option_id: pollDoc.options[0].id } });
 
     expect(response.statusCode).toBe(200);
@@ -164,7 +165,7 @@ describe('Private Poll API Tests', () => {
   test('Test that voting for a non-exited poll should receive bad request', async () => {
     let response = await request(app)
       .put('/api/polls/' + 'nonExitedPollId')
-      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, process.env.SECRET))
+      .set('Authorization', 'Bearer ' + jwt.sign({ id: userDoc.id }, SECRET))
       .send({ data: { option_id: 'nonExitedOptionsId' } });
 
     expect(response.statusCode).toBe(500);

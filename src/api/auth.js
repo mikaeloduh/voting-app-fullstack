@@ -1,8 +1,11 @@
+const config = require('config');
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 
 const { AppError } = require('../core/error');
 const db = require('../models');
+
+const SECRET = config.get('secret');
 
 const signupSchema = {
   options: { allowUnknown: { body: false } },
@@ -24,7 +27,7 @@ async function signup(req, res, next) {
       is_success: true,
       data: {
         username: user.username,
-        token: jwt.sign({ id: user.id }, process.env.SECRET)
+        token: jwt.sign({ id: user.id }, SECRET)
       }
     });
   } catch (err) {
@@ -62,7 +65,7 @@ async function login(req, res, next) {
       is_success: true,
       data: {
         username: user.username,
-        token: jwt.sign({ id: user.id }, process.env.SECRET)
+        token: jwt.sign({ id: user.id }, SECRET)
       }
     });
   } catch (err) {
@@ -79,7 +82,7 @@ async function authenticate(req, res, next) {
     if (!auth)
       throw new AppError('authenticate', 400, true, 'Please supply a valid token.');
 
-    let decode = await jwt.verify(auth.split(' ')[1], process.env.SECRET);
+    let decode = await jwt.verify(auth.split(' ')[1], SECRET);
     req.body.user = decode.id;
 
     return next();
