@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const User = require('./user');
 const Poll = require('./poll');
 
-const DB_URI = config.get('');
+const DB_URI = config.get('mongodbUri');
 
 mongoose.set('debug', true);
 mongoose.Promise = Promise;
