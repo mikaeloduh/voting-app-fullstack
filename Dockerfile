@@ -15,7 +15,7 @@ COPY . .
 EXPOSE 8000
 
 # Run the image as a non-root user
-RUN adduser -D myuser
-USER myuser
+# RUN adduser -D myuser
+# USER myuser
 
 CMD npm run start
