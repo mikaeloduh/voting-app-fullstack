@@ -1,9 +1,10 @@
+const config = require('config');
 const mongoose = require('mongoose');
 
 const User = require('./user');
 const Poll = require('./poll');
 
-const DB_URI = process.env.MONGODB_URI;
+const DB_URI = config.get('');
 
 mongoose.set('debug', true);
 mongoose.Promise = Promise;
