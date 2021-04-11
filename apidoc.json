@@ -1,0 +1,10 @@
+{
+    "name": "Voting App Service",
+    "version": "0.0.1",
+    "description": "The API documentation",
+    "title": "Voting App Service API Documentation",
+    "template": {
+        "withCompare": false,
+        "withGenerator": false
+    }
+}
