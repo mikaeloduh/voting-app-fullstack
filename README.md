@@ -1,4 +1,4 @@
-# Build a Voting App (Node backend)
+# Build a Voting App (backend)
 
 [![Build Status](https://cloud.drone.io/api/badges/mikaeloduh/voting-app-fullstack/status.svg)](https://cloud.drone.io/mikaeloduh/voting-app-fullstack)
 
@@ -29,8 +29,16 @@ npm run start
 
 To run test
 
-```bash
+```shell
 npm run test
+```
+
+## Documentation
+
+You can run this command and open browser at localhost:8000/document while server is running. Or check out our live demo from the link in repository detail.
+
+```shell
+npm run docs
 ```
 
 ## User Stories

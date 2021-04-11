@@ -37,6 +37,11 @@ app.get("/test", function(req, res) {
 });
 
 /**
+ * Serve the documentation page that is generated from apiDoc annotations
+ */
+app.use('/document', express.static('docs'));
+
+/**
  * API Router
  */
 app.use('/auth', authRoute);
