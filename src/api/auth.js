@@ -98,8 +98,8 @@ async function authorize(req, res, next) {
   try {
     let poll = await db.Poll.findById(req.params.poll_id);
 
-    if (poll == null || typeof poll === 'undefined')
-      throw new AppError('authorize', 404, true, 'Poll dose not exits.');
+    // if (poll == null || typeof poll === 'undefined')
+    //   throw new AppError('authorize', 404, true, 'Poll dose not exits.');
 
     if (req.body.user != poll.creator)
       throw new AppError('authorize', 401, true, 'Unauthorized process.');

@@ -6,17 +6,23 @@ const { signup, login, signupSchema, loginSchema } = require('../api/auth');
 const router = express.Router();
 
 /**
- * @api {post} /auth/signup Signup a user
+ * @api {post} /auth/signup Sign-up a user
+ * @apiGroup Auth
+ * @apiPermission Public
  *
- * @apiParam {string} email    User ID (in email format)
- * @apiParam {string} username User's Name
- * @apiParam {string} password User's password
+ * @apiHeader {String="application/json"} Content-Type=application/json
+ *
+ * @apiParam {Object} data
+ * @apiParam {string} data.email    User ID (in email format)
+ * @apiParam {string} data.username User's Name
+ * @apiParam {string} data.password User's password
  *
  * @apiSuccess (201) {Object} Username and login token
- * @apiSuccessExample (json) Success-Response:
+ *
+ * @apiSuccessExample {json} Success-Response:
  *   {
  *     "is_success": true,
- *     "body: {
+ *     "body": {
  *       "username": "Mike",
  *       "token": "eyJhbGciOiJIUzVCJ9.eyJpZCI6IjVlNyUwMzR9.lDXv4B02L9MsnLnvZ0"
  *     }
@@ -26,11 +32,17 @@ router.post('/signup', validate(signupSchema), signup);
 
 /**
  * @api {post} /auth/login User login
+ * @apiGroup Auth
+ * @apiPermission Public
  *
- * @apiParam {String} email    User account (in email format)
- * @apiParam {String} password User's password
+ * @apiHeader {String="application/json"} Content-Type=application/json
+ *
+ * @apiParam {Object} data
+ * @apiParam {String} data.email    User account (in email format)
+ * @apiParam {String} data.password User's password
  *
  * @apiSuccess (200) {Object} Username and login token
+ *
  * @apiSuccessExample {json} Success-Response:
  *   {
  *     "is_success": true,
