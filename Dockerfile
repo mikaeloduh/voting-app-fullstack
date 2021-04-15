@@ -12,6 +12,8 @@ COPY . .
 # ADD . /opt/voting-app-service/
 # WORKDIR /opt/voting-app-service/
 
+RUN npm run docs
+
 EXPOSE 8000
 
 # Run the image as a non-root user
